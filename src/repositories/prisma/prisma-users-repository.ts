@@ -31,4 +31,16 @@ export class PrismaUsersRepository implements UsersRepository {
 
     return user;
   }
+
+  async persistWordHistory(word: string): Promise<any> {
+    const teste = await prisma.user.create({
+      data: {
+        userWords: {
+          create: {
+            word,
+          },
+        },
+      },
+    });
+  }
 }
