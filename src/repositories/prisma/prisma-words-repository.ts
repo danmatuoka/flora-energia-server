@@ -11,7 +11,7 @@ export class PrismaWordsRepository implements WordsRepository {
         },
       },
       take: limit,
-      skip: limit * page,
+      skip: (page - 1) * limit,
       orderBy: {
         word: 'asc',
       },

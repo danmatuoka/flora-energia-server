@@ -42,4 +42,29 @@ export class PrismaFavoriteWordRepository implements FavoriteWordRepository {
 
     return favorite;
   }
+
+  async getAllFavorites(
+    userId: string,
+    limit: number,
+    page: number,
+  ): Promise<{ words: UserFavorite[]; total: number }> {
+    const words = await prisma.userFavorite.findMany({
+      where: {
+        userId,
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+      orderBy: {
+        favoritedAt: 'asc',
+      },
+    });
+
+    const total = await prisma.userFavorite.count({
+      where: {
+        userId,
+      },
+    });
+
+    return { words, total };
+  }
 }
