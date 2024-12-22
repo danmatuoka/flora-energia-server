@@ -3,6 +3,7 @@ import fastify from 'fastify';
 import { ZodError } from 'zod';
 import { env } from '@/env';
 import { usersRoutes } from './http/controllers/users/routes';
+import { wordsRoutes } from './http/controllers/words/routes';
 
 export const app = fastify();
 
@@ -11,6 +12,7 @@ app.register(fastifyJwt, {
 });
 
 app.register(usersRoutes);
+app.register(wordsRoutes);
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
