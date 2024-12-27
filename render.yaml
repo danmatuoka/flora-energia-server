@@ -27,7 +27,6 @@ services:
       name: flora-postgres
       property: connectionString
   region: oregon
-  buildCommand: yarn --frozen-lockfile install
+  buildCommand: yarn --frozen-lockfile install && yarn build && npx prisma migrate deploy
   startCommand: yarn start
-  preDeployCommand: npx prisma migrate deploy
 version: "1"
