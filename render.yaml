@@ -1,0 +1,33 @@
+# Exported from Render on 2024-12-27T14:34:42Z
+databases:
+- name: flora-postgres
+  databaseName: flora_postgres
+  user: flora_postgres_user
+  plan: free
+  region: oregon
+  ipAllowList:
+  - source: 0.0.0.0/0
+    description: everywhere
+  postgresMajorVersion: "16"
+services:
+- type: web
+  name: flora-energia-server
+  runtime: node
+  repo: https://github.com/danmatuoka/flora-energia-server
+  plan: free
+  envVars:
+  - key: DICTIONARY_BASE_URL
+    sync: false
+  - key: JWT_SECRET
+    sync: false
+  - key: NODE_ENV
+    sync: false
+  - key: DATABASE_URL
+    fromDatabase:
+      name: flora-postgres
+      property: connectionString
+  region: oregon
+  buildCommand: yarn --frozen-lockfile install
+  startCommand: yarn start
+  preDeployCommand: npx prisma migrate deploy
+version: "1"
