@@ -21,10 +21,14 @@ export class GetWordDetailsUseCase {
       word,
     });
 
-    await this.userWordRepository.create({
-      word,
-      userId,
-    });
+    const wordExists = await this.userWordRepository.findOneWord(word, userId);
+
+    if (!wordExists) {
+      await this.userWordRepository.create({
+        word,
+        userId,
+      });
+    }
 
     return wordDetails;
   }

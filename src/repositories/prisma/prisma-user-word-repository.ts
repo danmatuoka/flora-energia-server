@@ -26,7 +26,7 @@ export class PrismaUserWordRepository implements UserWordRepository {
       take: limit,
       skip: (page - 1) * limit,
       orderBy: {
-        viewedAt: 'asc',
+        viewedAt: 'desc',
       },
     });
 
@@ -37,5 +37,20 @@ export class PrismaUserWordRepository implements UserWordRepository {
     });
 
     return { words, total };
+  }
+
+  async findOneWord(word: string, userId: string) {
+    const words = await prisma.userWord.findFirst({
+      where: {
+        AND: [
+          {
+            word: word,
+          },
+          { userId: userId },
+        ],
+      },
+    });
+
+    return words;
   }
 }
